@@ -27,24 +27,29 @@ class Main {
 			
 		}
 
-		dfs(1, 0);
+		bfs(1);
 		for (int i = 2; i <= n; i++) {
 			System.out.println(parent[i]);
 		}
 		
 	}
 
-	static void dfs(int now, int par) {
-		
-		visited[now] = true;
-    parent[now] = par;
+	static void bfs(int now) {
 
-		for(int next : array.get(now)) {
-			if (!visited[next]) {
-            dfs(next, now);
-      }
+		Queue<Integer> queue = new LinkedList<>();
+		visited[now] = true;
+		queue.offer(now);
+
+		while(!queue.isEmpty()) {
+			int n = queue.poll();
+			for (int next : array.get(n)) {
+				if (!visited[next]) {
+					visited[next] = true;
+					parent[next] = n;
+					queue.offer(next);
+				}
+			}
 		}
-		
 	}
 	
 }
