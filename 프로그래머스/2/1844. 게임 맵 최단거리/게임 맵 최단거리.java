@@ -1,28 +1,23 @@
 import java.util.*;
 
 class Solution {
-    
-    static int[] rx ={0, 0, -1, 1};
-    static int[] ry ={-1, 1, 0, 0};
-    static boolean[][] visited;
-    
     public int solution(int[][] maps) {
         
-        int n = maps.length;
-        int m = maps[0].length;
-        visited = new boolean[n][m];
+        boolean[][] visited = new boolean[maps.length][maps[0].length];
+        Queue<int[]> q = new LinkedList<>();
+        int[] rx ={0, 0, -1, 1};
+        int[] ry ={-1, 1, 0, 0};
         
-        Queue<int[]> queue = new LinkedList<>();
-        queue.add(new int[] {0, 0, 1});
+        q.offer(new int[] {0, 0, 1});
         visited[0][0] = true;
         
-        while(!queue.isEmpty()) {
-            int[] temp = queue.poll();
+        while(!q.isEmpty()) {
+            int[] temp = q.poll();
             int y = temp[0];
             int x = temp[1];
             int count = temp[2];
             
-            if (y == n - 1 && x == m - 1) {
+            if (y == maps.length - 1 && x == maps[0].length - 1) {
                 return count;
             }
             
@@ -30,7 +25,7 @@ class Solution {
                 int ny = y + ry[i];
                 int nx = x + rx[i];
                 
-                if(ny < 0 || nx < 0 || ny >= n || nx >= m) {
+                if(ny < 0 || nx < 0 || ny >= maps.length || nx >= maps[0].length) {
                     continue;
                 }
                 
@@ -39,7 +34,7 @@ class Solution {
                 }
                 
                 if(maps[ny][nx] == 1) {
-                    queue.add(new int[] {ny, nx, count + 1});
+                    q.offer(new int[] {ny, nx, count + 1});
                     visited[ny][nx] = true;
                 }
             }
