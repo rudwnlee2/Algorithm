@@ -9,7 +9,7 @@ class Solution {
         int answer = n;
         graph = new int[n + 1][n + 1];
         
-        for(int i = 0; i < wires.length; i++){
+        for(int i = 0; i < wires.length; i++) {
             int x = wires[i][0];
             int y = wires[i][1];
             
@@ -17,7 +17,7 @@ class Solution {
             graph[y][x] = 1;
         }
         
-        for(int i = 0; i < wires.length; i++){
+        for(int i = 0; i < wires.length; i++) {
             int x = wires[i][0];
             int y = wires[i][1];
             
@@ -39,15 +39,15 @@ class Solution {
         boolean[] visited = new boolean[n + 1];
         int count = 1;
         
-        Queue<Integer> q = new LinkedList<Integer>();
+        Queue<Integer> q = new LinkedList<>();
         visited[x] = true;
         q.offer(x);
         
-        while(!q.isEmpty()){
+        while(!q.isEmpty()) {
             int temp = q.poll();
             
-            for(int i = 1; i <= n; i++){
-                if(graph[temp][i] == 1 && !visited[i]){
+            for(int i = 1; i <= n; i++) {
+                if(graph[temp][i] == 1 && !visited[i]) {
                     visited[i] = true;
                     q.offer(i);
                     count ++;
@@ -57,5 +57,4 @@ class Solution {
         
         return (int)Math.abs(count - (n - count));
     }
-    
 }
