@@ -27,16 +27,18 @@ class Solution {
             }
         }
         
+        int[][] sumArr = new int[n + 1][n + 1];
+        for(int i = 1; i <= n; i++) {
+            for(int j = 1; j <= n; j++) {
+                sumArr[i][j] = sumArr[i - 1][j] + sumArr[i][j - 1] - sumArr[i - 1][j - 1] + arr[i - 1][j - 1];
+            }
+        }
+        
         int max = 0;
-        for(int i = 0; i <n - m + 1; i++) {
-            for(int j = 0; j < n - m + 1; j++) {
-                int temp = 0;
-                for(int k = 0; k < m; k++) {
-                    for(int l = 0; l < m; l++) {
-                        temp += arr[i + k][j + l];
-                    }
-                }
-                max = Math.max(temp, max);
+        for(int i = 0; i <= n - m; i++) {
+            for(int j = 0; j <= n - m; j++) {
+                int temp = sumArr[i + m][j + m] - sumArr[i][j + m] - sumArr[i + m][j] + sumArr[i][j];
+                max = Math.max(max, temp);
             }
         }
         
