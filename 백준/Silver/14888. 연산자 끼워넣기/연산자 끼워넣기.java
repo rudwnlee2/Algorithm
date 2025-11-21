@@ -1,57 +1,65 @@
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
 class Main {
-
-	static int[] number;
-	static int[] calculation;
-	static int max = Integer.MIN_VALUE;
-	static int min = Integer.MAX_VALUE;
 	
-	public static void main(String[] args) throws Exception {
+	static int[] op;
+	static int[] arr;
+	static int max;
+	static int min;
+	static int n;
+	
+	public static void main(String args[]) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		int n = Integer.parseInt(br.readLine());
-		number = new int[n];
-		calculation = new int[4];
-
+		n = Integer.parseInt(br.readLine());
+		
+		arr = new int[n];
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		for(int i = 0; i < n; i++) {
-			number[i] = Integer.parseInt(st.nextToken());
+			arr[i] = Integer.parseInt(st.nextToken());
 		}
-
+		
+		op = new int[4];
 		st = new StringTokenizer(br.readLine());
 		for(int i = 0; i < 4; i++) {
-			calculation[i] = Integer.parseInt(st.nextToken());
+			op[i] = Integer.parseInt(st.nextToken());
 		}
-
-		dfs(1, number[0]);
+		
+		max = Integer.MIN_VALUE;
+		min = Integer.MAX_VALUE;
+		dfs(1, arr[0]);
+		
 		System.out.println(max);
 		System.out.println(min);
-		
 	}
-
-	static void dfs(int index, int current) {
-		if(index == number.length) {
-			max = Math.max(max, current);
-			min = Math.min(min, current);
+	
+	private static void dfs(int index, int num) {
+		if(index == n) {
+			max = Math.max(max, num);
+			min = Math.min(min, num);
 			return;
 		}
-
+		
 		for(int i = 0; i < 4; i++) {
-			if(calculation[i] > 0) {
-				calculation[i]--;
-				int next;
-				if(i == 0) {
-					next = current + number[index];
-				} else if(i == 1) {
-					next = current - number[index];
-				} else if(i == 2) {
-					next = current * number[index];
-				} else {
-					next = current / number[index];
-				}
-				dfs(index + 1, next);
-				calculation[i]++;
+			if(op[i] > 0 && i == 0) {
+				op[i] -= 1;
+				dfs(index + 1, num + arr[index]);
+				op[i] += 1;
+			} else if(op[i] > 0 && i == 1) {
+				op[i] -= 1;
+				dfs(index + 1, num - arr[index]);
+				op[i] += 1;
+			} else if((op[i] > 0 && i == 2)) {
+				op[i] -= 1;
+				dfs(index + 1, num * arr[index]);
+				op[i] += 1;
+			} else if (op[i] > 0){
+				op[i] -= 1;
+				dfs(index + 1, num / arr[index]);
+				op[i] += 1;
 			}
 		}
 		
