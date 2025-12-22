@@ -8,7 +8,6 @@ class Main {
 
 		int n = Integer.parseInt(st.nextToken());
 		int k = Integer.parseInt(st.nextToken());
-		int[][] arr = new int[n + 1][2];
 		int[] w = new int[n + 1];
 		int[] v = new int[n + 1];
 
@@ -19,7 +18,6 @@ class Main {
 		}
 
 		int[][] dp = new int[n + 1][k + 1]; 
-		dp[0][0] = 0;
 		for(int i = 1; i <= n; i++) {
 			for(int j = 1; j <= k; j++) {
 				if(w[i] > j) {
