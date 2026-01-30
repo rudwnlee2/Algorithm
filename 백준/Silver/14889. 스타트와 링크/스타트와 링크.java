@@ -11,9 +11,10 @@ class Main {
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		n = Integer.parseInt(br.readLine());
+
 		arr = new int[n][n];
 		visited = new boolean[n];
-
+		
 		StringTokenizer st;
 		for(int i = 0; i < n; i++) {
 			st = new StringTokenizer(br.readLine());
@@ -21,40 +22,38 @@ class Main {
 				arr[i][j] = Integer.parseInt(st.nextToken());
 			}
 		}
-
-		dfs(0, 0);
+		
+		back(0, 0);
 		System.out.println(min);
 	}
 
-
-	static void dfs(int index, int count) {
-		if(count == n / 2) {
-			
-			int start = 0;
+	private static void back(int start, int depth) {
+		if(depth == n / 2) {
+			int star = 0;
 			int link = 0;
 
 			for(int i = 0; i < n - 1; i++) {
 				for(int j = i + 1; j < n; j++) {
 					if(visited[i] && visited[j]) {
-						start += (arr[i][j] + arr[j][i]);
-					} else if (!visited[i] && !visited[j]) {
+						star += (arr[i][j] + arr[j][i]);
+					} else if(!visited[i] && !visited[j]){
 						link += (arr[i][j] + arr[j][i]);
 					}
 				}
 			}
 
-			int temp = Math.abs(start - link);
-			min = Math.min(min, temp);
+			min = Math.min(min, Math.abs(star - link));
 			
 			return;
 		}
 
-		for(int i = index; i < n; i++) {
+		for(int i = start; i < n; i++) {
 			if(!visited[i]) {
 				visited[i] = true;
-				dfs(i + 1, count + 1);
+				back(i + 1, depth + 1);
 				visited[i] = false;
 			}
 		}
 	}
+	
 }
