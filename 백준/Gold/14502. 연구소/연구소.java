@@ -3,12 +3,14 @@ import java.util.*;
 
 class Main {
 
-	static int[] ny = {-1, 1, 0, 0};
-	static int[] nx = {0, 0, -1, 1};
-	static int[][] arr;
 	static int n;
 	static int m;
-	static int answer;
+	static int[][] arr;
+
+	static int[] my = {-1, 1, 0, 0};
+	static int[] mx = {0, 0, -1, 1};
+
+	static int max = 0;
 	
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -25,14 +27,12 @@ class Main {
 			}
 		}
 
-		answer = 0;
 		dfs(0);
-
-		System.out.println(answer);
+		System.out.println(max);
 	}
 
-	private static void dfs(int wall) {
-		if(wall ==3) {
+	private static void dfs(int count) {
+		if(count == 3) {
 			bfs();
 			return;
 		}
@@ -41,7 +41,7 @@ class Main {
 			for(int j = 0; j < m; j++) {
 				if(arr[i][j] == 0) {
 					arr[i][j] = 1;
-					dfs(wall + 1);
+					dfs(count + 1);
 					arr[i][j] = 0;
 				}
 			}
@@ -51,18 +51,19 @@ class Main {
 
 	private static void bfs() {
 		Queue<int[]> q = new LinkedList<>();
+
+		int[][] newArr = new int[n][m];
 		for(int i = 0; i < n; i++) {
 			for(int j = 0; j < m; j++) {
-				if(arr[i][j] == 2) {
-					q.offer(new int[] {i, j});
-				}
+				newArr[i][j] = arr[i][j];
 			}
 		}
 
-		int[][] copyArr = new int[n][m];
 		for(int i = 0; i < n; i++) {
 			for(int j = 0; j < m; j++) {
-				copyArr[i][j] = arr[i][j];
+				if(newArr[i][j] == 2) {
+					q.offer(new int[] {i, j});
+				}
 			}
 		}
 
@@ -70,28 +71,27 @@ class Main {
 			int[] temp = q.poll();
 
 			for(int i = 0; i < 4; i++) {
-				int y = temp[0] + ny[i];
-				int x = temp[1] + nx[i];
+				int y = my[i] + temp[0];
+				int x = mx[i] + temp[1];
 
-				if(y < 0 || x < 0 || y >= n || x >= m) continue;
-				
-				if(copyArr[y][x] == 0) {
-					copyArr[y][x] = 2;
-					q.offer(new int[] {y, x});
-				}
+				if(y >= n || x >= m || y < 0 || x < 0) continue;
+
+				if(newArr[y][x] == 1 || newArr[y][x] == 2) continue;
+
+				newArr[y][x] = 2;
+				q.offer(new int[] {y, x});
 			}
+			
 		}
 
 		int count = 0;
 		for(int i = 0; i < n; i++) {
 			for(int j = 0; j < m; j++) {
-				if(copyArr[i][j] == 0) {
-					count += 1;
-				}
+				if(newArr[i][j] == 0) count++;
 			}
 		}
 
-		answer = Math.max(answer, count);
+		max = Math.max(max, count);
 	}
 	
 }
