@@ -6,29 +6,30 @@ class Main {
 		int m = Integer.parseInt(br.readLine());
 		String s = br.readLine();
 
-		StringBuilder sb = new StringBuilder();
-		sb.append("I");
-
-		for(int i = 0; i < n; i++) {
-			sb.append("OI");
-		}
-
-		int count = 0;
-		for(int i = 0; i <= m - sb.length(); i++) {
+		int result = 0;
+		for(int i = 0; i < m; i++) {
 			if(s.charAt(i) == 'I') {
-				boolean check = true;
-				
-				for(int j = 0; j < sb.length(); j++) {
-					if(s.charAt(i + j) != sb.charAt(j)) {
-						check = false;
+				int count = 0;
+				int index = i;
+
+				while(index + 2 < m) {
+					if(s.charAt(index + 1) == 'O' && s.charAt(index + 2) == 'I') {
+						count++;
+						index += 2;
+
+						if(count == n) {
+							result++;
+							count -= 1;
+						}
+					} else {
 						break;
 					}
 				}
 
-				if(check) count++;
+				i = index;
 			}
 		}
 		
-		System.out.println(count);
+		System.out.println(result);
 	}
 }
