@@ -18,8 +18,23 @@ class Main {
 		zero /= 2;
 
 		StringBuilder sb = new StringBuilder();
-		for(int i = 0; i < zero; i++) sb.append("0");
-		for(int i = 0; i < one; i++) sb.append("1");
+		for(int i = 0; i < s.length(); i++) {
+			if(s.charAt(i) == '1' && one > 0) {
+				one--;
+				continue;
+			}
+
+			sb.append(s.charAt(i));
+		}
+
+		for(int i = sb.length() - 1; i >= 0; i--) {
+			if(sb.charAt(i) == '0' && zero > 0) {
+				sb.deleteCharAt(i);
+				zero--;
+			}
+
+			if(zero == 0) break;
+		}
 
 		System.out.println(sb);
 	}
