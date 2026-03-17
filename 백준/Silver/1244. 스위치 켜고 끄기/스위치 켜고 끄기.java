@@ -1,62 +1,46 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 class Main {
-
-	public static void main(String args[]) throws Exception {
+	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		
 		int n = Integer.parseInt(br.readLine());
 		int[] arr = new int[n + 1];
-		
+
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		for(int i = 1; i <= n; i++) {
 			arr[i] = Integer.parseInt(st.nextToken());
 		}
-		
-		int student = Integer.parseInt(br.readLine());
-		for(int i = 0; i < student; i++) {
+
+		int s = Integer.parseInt(br.readLine());
+		for(int i = 0; i < s; i++) {
 			st = new StringTokenizer(br.readLine());
-			int check = Integer.parseInt(st.nextToken());
-			if(check == 1) {
-				int man = Integer.parseInt(st.nextToken());
-				
-				for(int j = man; j <= n; j += man) {
-					if(arr[j] == 0) {
-						arr[j] = 1;
-					} else {
+			
+			int temp = Integer.parseInt(st.nextToken());
+			int num = Integer.parseInt(st.nextToken());
+			
+			if(temp == 1) {
+				for(int j = num; j <= n; j += num) {
+					if(arr[j] == 1) {
 						arr[j] = 0;
+					} else {
+						arr[j] = 1;
 					}
 				}
 			} else {
-				int female = Integer.parseInt(st.nextToken());
-				
-				if(arr[female] == 0) {
-					arr[female] = 1;
-				} else {
-					arr[female] = 0;
-				}
-				int start = female - 1;
-				int end = female + 1;
-				
+				int count = 0;
 				while(true) {
-					if(start < 1 || end > n) break;
+					if(num - count <= 0 || num + count > n) break;
 					
-					if(arr[start] == arr[end]) {
-						if(arr[start] == 0) {
-							arr[start] = 1;
+					if(arr[num - count] == arr[num + count]) {
+						if(arr[num - count] == 1) {
+							arr[num - count] = 0;
+							arr[num + count] = 0;
 						} else {
-							arr[start] = 0;
+							arr[num - count] = 1;
+							arr[num + count] = 1;
 						}
-						
-						if(arr[end] == 0) {
-							arr[end] = 1;
-						} else {
-							arr[end] = 0;
-						}
-						start--;
-						end++;
+						count++;
 					} else {
 						break;
 					}
@@ -64,13 +48,15 @@ class Main {
 			}
 			
 		}
-		
+
+		StringBuilder sb = new StringBuilder();
 		for(int i = 1; i <= n; i++) {
-			System.out.print(arr[i] + " ");
+			sb.append(arr[i]).append(" ");
 			if(i % 20 == 0) {
-				System.out.println();
+				sb.append("\n");
 			}
 		}
+		
+		System.out.println(sb);
 	}
-	
 }
