@@ -37,8 +37,7 @@ class Main {
 		q.offer(new int[] {0, 0});
 
 		int time = 0;
-		while(n > 0) {
-
+		while(true) {
 			int ny = dy[dir] + headY;
 			int nx = dx[dir] + headX;
 			time++;
@@ -54,16 +53,21 @@ class Main {
 				}
 			}
 
+			if(arr[ny][nx] == 2) {
+				System.out.println(time);
+				return;
+			}
+
 			if(arr[ny][nx] == 0) {
-				q.poll();
-			} else {
-				arr[ny][nx] = 0;
+				int[] temp = q.poll();
+				arr[temp[0]][temp[1]] = 0;
 			}
 
 			q.offer(new int[] {ny, nx});
+			arr[ny][nx] = 2;
 			headY = ny;
 			headX = nx;
-
+			
 			if(map.containsKey(time)) {
 				if(map.get(time) == 'L') {
 					dir = dir - 1;
