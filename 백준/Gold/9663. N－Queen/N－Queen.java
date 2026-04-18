@@ -1,17 +1,21 @@
 import java.io.*;
-import java.util.*;
 
 class Main {
-	static int[] arr;
+
 	static int n;
-	static int count = 0;
+	static int count;
+	
+	static boolean[][] board;
 	
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		n = Integer.parseInt(br.readLine());
-		arr = new int[n];
+		count = 0;
+		
+		board = new boolean[n][n];
 
 		dfs(0);
+		
 		System.out.println(count);
 	}
 
@@ -22,22 +26,37 @@ class Main {
 		}
 
 		for(int i = 0; i < n; i++) {
-			arr[depth] = i;
-			if(check(depth)) {
+			if(check(depth, i)) {
+				board[depth][i] = true;
 				dfs(depth + 1);
+				board[depth][i] = false;
 			}
 		}
+		
 	}
 
-	private static boolean check(int depth) {
-		for(int i = 0; i < depth; i++) {
-			if(arr[depth] == arr[i]) {
-				return false;
-			} else if(Math.abs(depth - i) == Math.abs(arr[depth] - arr[i])) {
-				return false;
-			}
+	private static boolean check(int y, int x) {
+		for(int i = 0; i < y; i++) {
+			if (board[i][x]) return false;
+		}
+
+		int r = y - 1;
+		int c = x - 1;
+		while(r >= 0 && c >= 0) {
+			if (board[r][c]) return false;
+			r--;
+			c--;
+		}
+
+		r = y - 1;
+		c = x + 1;
+		while(r >= 0 && c < n) {
+			if (board[r][c]) return false;
+			r--;
+			c++;
 		}
 
 		return true;
 	}
+	
 }
