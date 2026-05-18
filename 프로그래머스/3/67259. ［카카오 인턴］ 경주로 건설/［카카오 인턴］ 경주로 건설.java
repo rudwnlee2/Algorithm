@@ -4,14 +4,7 @@ class Solution {
     public int solution(int[][] board) {
         int answer = 0;
         int n = board.length;
-        int[][] arr = new int[n][n];
         boolean[][][] visited = new boolean[n][n][4];
-        
-        for(int i = 0; i < n; i++) {
-            for(int j = 0; j < n; j++) {
-                arr[i][j] = Integer.MAX_VALUE;
-            }
-        }
         
         int[] dy = {1, 0, -1, 0};
         int[] dx = {0, 1, 0, -1};
@@ -34,8 +27,6 @@ class Solution {
             }
             
             visited[y][x][dir] = true;
-            
-            arr[y][x] = Math.min(arr[y][x], cost);
             
             for(int i = 0; i < 4; i++) {
                 int nd = (dir + i) % 4;
