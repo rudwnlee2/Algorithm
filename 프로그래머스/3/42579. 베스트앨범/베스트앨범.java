@@ -3,41 +3,50 @@ import java.util.*;
 class Solution {
     public int[] solution(String[] genres, int[] plays) {
         
-        HashMap<String, HashMap<Integer, Integer>> map = new HashMap<>();
-        HashMap<String, Integer> num = new HashMap<>();
+        Map<String, List<int[]>> playMap = new HashMap<>();
+        Map<String, Integer> genreMap = new HashMap<>();
         
         for(int i = 0; i < genres.length; i++) {
+            genreMap.put(genres[i], genreMap.getOrDefault(genres[i], 0) + plays[i]);
             
-            if(!map.containsKey(genres[i])) {
-                HashMap<Integer, Integer> temp = new HashMap<>();
-                temp.put(i, plays[i]);
-                map.put(genres[i], temp);
-                num.put(genres[i], plays[i]);
-            } else {
-                map.get(genres[i]).put(i, plays[i]);
-                num.put(genres[i], num.get(genres[i]) + plays[i]);
+            if(!playMap.containsKey(genres[i])) {
+                playMap.put(genres[i], new ArrayList<int[]>());
             }
             
+            playMap.get(genres[i]).add(new int[] {i, plays[i]});
         }
         
-        List<String> keySet = new ArrayList(num.keySet());
-        Collections.sort(keySet, (s1, s2) -> num.get(s2) - (num.get(s1)));
+        List<String> list = new ArrayList<>(genreMap.keySet());
         
-        List<Integer> li = new ArrayList<>();
-        for(String key : keySet) {
-            HashMap<Integer, Integer> temp = map.get(key);
-            List<Integer> list = new ArrayList(temp.keySet());
-            
-            Collections.sort(list, (s1, s2) -> temp.get(s2) - (temp.get(s1)));
-            
-            li.add(list.get(0));
-            if(list.size() > 1)
-                li.add(list.get(1));
+        Collections.sort(list, (a, b) -> {
+            return genreMap.get(b) - genreMap.get(a);
+        });
+        
+        for(String key : playMap.keySet()) {
+            Collections.sort(playMap.get(key), (a, b) -> {
+                if(a[1] == b[1]) {
+                    return a[0] - b[0];
+                }
+                
+                return b[1] - a[1];
+            });
         }
         
-        int[] answer = new int[li.size()];
-        for(int i = 0; i < li.size(); i++) {
-            answer[i] = li.get(i);
+        List<Integer> temp = new ArrayList<>();
+        
+        for(String s : list) {
+            List<int[]> songs = playMap.get(s);
+            
+            int count = Math.min(2, songs.size());
+            
+            for(int i = 0; i < count; i++) {
+                temp.add(songs.get(i)[0]);
+            }
+        }
+        
+        int[] answer = new int[temp.size()];
+        for(int i = 0; i < answer.length; i++) {
+            answer[i] = temp.get(i);
         }
         
         return answer;
